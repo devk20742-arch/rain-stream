@@ -1,47 +1,12 @@
-name: 24/7 Rain Stream
 
+    name: 24/7 Rain Stream
 on:
-  schedule:
-    - cron: '0 */5 * * *'
   workflow_dispatch:
-
 jobs:
   stream:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Install FFmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
-
-      - name: Start Live Stream
-        run: |
-          name: 24/7 Rain Stream
-
-on:
-  schedule:
-    - cron: '0 */5 * * *'
-  workflow_dispatch:
-
-jobs:
-  stream:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Install FFmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
-
-      - name: Start Live Stream
-        run: |
-          ffmpeg -re -stream_loop -1 -i "https://docs.google.com/uc?export=download&id=1eX-aF1nYWLa8hlTdSBVuX9_t3T3RUYNM" \
-          -c:v libx264 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k \
-          -pix_fmt yuv420p -g 50 -c:a aac -b:a 128k -ar 44100 \
-          -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.YOUTUBE_STREAM_KEY }}"
-          
-          -c:v libx264 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k \
-          -pix_fmt yuv420p -g 50 -c:a aac -b:a 128k -ar 44100 \
-          -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.YOUTUBE_STREAM_KEY }}"
-          
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: ffmpeg -re -stream_loop -1 -i "https://docs.google.com/uc?export=download&id=1eX-aF1nYWLa8hlTdSBVuX9_t3T3RUYNM" -c:v libx264 -preset veryfast -b:v 3000k -pix_fmt yuv420p -c:a aac -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.YOUTUBE_STREAM_KEY }}"
+      
